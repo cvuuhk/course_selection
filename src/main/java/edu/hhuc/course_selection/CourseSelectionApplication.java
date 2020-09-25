@@ -1,11 +1,16 @@
 package edu.hhuc.course_selection;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CourseSelectionApplication{
+public class CourseSelectionApplication implements CommandLineRunner{
     public static void main(String[] args){
         SpringApplication.run(CourseSelectionApplication.class, args);
+    }
+    @Override
+    public void run(String... args) throws Exception{
+    
     }
 }
