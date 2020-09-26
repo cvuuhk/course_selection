@@ -33,6 +33,7 @@ public class StudentService{
     public void select(String studentId, String courseId){
         Course course = courseRepository.findCourseById(courseId);
         if(course.getRemaining() == 0){
+            log.info("学生 "+studentId+" 选课 "+courseId+" 失败：课余量不足。");
             throw new CourseInsufficientException("课程数量不足，等待其他同学退课再选吧！");
         }
         Student student = studentRepository.findStudentById(studentId);
@@ -40,8 +41,6 @@ public class StudentService{
         course.setRemaining(course.getRemaining()-1);
         courseRepository.saveAndFlush(course);
         studentRepository.save(student);
-        
-        log.info("学生 "+studentId+" 选课 "+courseId+" 成功！");
     }
     
     @Transactional
