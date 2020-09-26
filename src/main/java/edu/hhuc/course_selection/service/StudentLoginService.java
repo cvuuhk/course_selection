@@ -1,4 +1,4 @@
-package edu.hhuc.course_selection.entity.login;
+package edu.hhuc.course_selection.service;
 import edu.hhuc.course_selection.repository.StudentLoginRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

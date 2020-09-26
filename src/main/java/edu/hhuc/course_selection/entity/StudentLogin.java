@@ -1,4 +1,4 @@
-package edu.hhuc.course_selection.entity.login;
+package edu.hhuc.course_selection.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

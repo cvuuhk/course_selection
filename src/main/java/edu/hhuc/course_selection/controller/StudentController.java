@@ -2,6 +2,7 @@ package edu.hhuc.course_selection.controller;
 import edu.hhuc.course_selection.entity.Course;
 import edu.hhuc.course_selection.entity.Student;
 import edu.hhuc.course_selection.service.StudentService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -12,20 +13,22 @@ public class StudentController{
     @Resource
     StudentService service;
     
-    @GetMapping(value = "/{studentId}")
-    public Student getStudent(@PathVariable String studentId){
+    
+    @GetMapping(value = "/")
+    public Student getStudent(Authentication authentication){
+        String studentId = authentication.getName();
         return service.getStudentById(studentId);
     }
     
     @GetMapping(value = "/courses")
-    public List<Course> view(){
-        String studentId = "1762810233";
+    public List<Course> view(Authentication authentication){
+        String studentId = authentication.getName();
         return service.getCoursesByStudentId(studentId);
     }
     
     @PostMapping(value = "/select")
-    public String select(@RequestBody List<String> courseIds){
-        String studentId = "1762810233";
+    public String select(@RequestBody List<String> courseIds, Authentication authentication){
+        String studentId = authentication.getName();
         for(String courseId : courseIds){
             service.select(studentId, courseId);
         }
@@ -33,8 +36,8 @@ public class StudentController{
     }
     
     @PostMapping(value = "/delete")
-    public String delete(@RequestBody List<String> courseIds){
-        String studentId = "1762810233";
+    public String delete(@RequestBody List<String> courseIds, Authentication authentication){
+        String studentId = authentication.getName();
         for(String courseId : courseIds){
             service.delete(studentId, courseId);
         }

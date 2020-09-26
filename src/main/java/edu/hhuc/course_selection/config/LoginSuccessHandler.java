@@ -1,4 +1,6 @@
 package edu.hhuc.course_selection.config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -13,18 +15,21 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
                                         HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException{
+        
+        Logger logger = LoggerFactory.getLogger(this.getClass());
         for(GrantedAuthority authority : authentication.getAuthorities()){
             switch(authority.getAuthority()){
                 case "ROLE_STUDENT" -> {
-                    response.sendRedirect("/student/"+authentication.getName());
+                    logger.info("学生 "+authentication.getName()+" 登录成功");
+                    response.sendRedirect("/student/");
                     return;
                 }
                 case "ROLE_TEACHER" -> {
-                    response.sendRedirect("/teacher/"+authentication.getName());
+                    response.sendRedirect("/teacher/");
                     return;
                 }
                 case "ROLE_ADMIN" -> {
-                    response.sendRedirect("/admin/"+authentication.getName());
+                    response.sendRedirect("/admin/");
                     return;
                 }
                 default -> response.sendRedirect("/");

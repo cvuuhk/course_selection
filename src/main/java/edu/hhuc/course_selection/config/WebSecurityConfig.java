@@ -1,5 +1,5 @@
 package edu.hhuc.course_selection.config;
-import edu.hhuc.course_selection.entity.login.StudentLoginService;
+import edu.hhuc.course_selection.service.StudentLoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
