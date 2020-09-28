@@ -1,5 +1,6 @@
 src/main/resources/application-database.properties
 target/
+data/login.csv
 ### STS ###
 .apt_generated
 .classpath

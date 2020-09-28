@@ -1,5 +1,5 @@
 package edu.hhuc.course_selection.service;
-import edu.hhuc.course_selection.repository.StudentLoginRepository;
+import edu.hhuc.course_selection.dao.StudentLoginRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

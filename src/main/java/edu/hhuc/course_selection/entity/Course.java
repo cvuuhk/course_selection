@@ -1,52 +1,58 @@
 package edu.hhuc.course_selection.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 课程信息表
  */
 @Entity
 @Table(name = "course")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "selections"})
 public class Course{
     @Id
     @Column(name = "id", nullable = false, columnDefinition = "char(10)")
     private String id;
     
-    @Column(name = "name", nullable = false, columnDefinition = "varchar(100)")
+    @Column(name = "name", nullable = false)
     private String name;
     
-    @JsonIgnore
     @Column(name = "remaining", nullable = false, columnDefinition = "tinyint unsigned")
     private Integer remaining;
     
-    @ManyToMany(mappedBy = "courses")
-    private List<Student> students = new ArrayList<>();
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private Set<Selection> selections = new HashSet<>();
     
-    public Course(){}
-    public Course(String id, String name, Integer remaining){
-        this.id = id;
-        this.name = name;
-        this.remaining = remaining;
-    }
-    public void setId(String id){ this.id = id; }
     public String getId(){ return id; }
-    public void setName(String name){ this.name = name; }
     public String getName(){ return name; }
-    public void setRemaining(Integer remaining){ this.remaining = remaining; }
     public Integer getRemaining(){ return remaining; }
-    @JsonIgnore
-    public List<Student> getStudents(){ return students; }
+    public Set<Selection> getSelections(){ return selections; }
+    
+    public Course setName(String name){
+        this.name = name;
+        return this;
+    }
+    public Course setRemaining(Integer remaining){
+        this.remaining = remaining;
+        return this;
+    }
+    public Course addSelection(Selection selection){
+        if(selection == null){
+            throw new IllegalArgumentException("参数 selection 为空！");
+        }
+        selection.setCourse(this);
+        selections.add(selection);
+        return this;
+    }
     
     @Override
     public String toString(){
-        return "Course{"+
-                "id="+id+'\''+
-                "name="+name+'\''+
-                "remaining="+remaining+'\''+
-                '}';
+        return "{ 课程号："+id+
+                "，课程名："+name+
+                "，课余量："+remaining+
+                " }";
     }
 }

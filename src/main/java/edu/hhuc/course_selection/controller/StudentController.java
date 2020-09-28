@@ -1,5 +1,6 @@
 package edu.hhuc.course_selection.controller;
 import edu.hhuc.course_selection.entity.Course;
+import edu.hhuc.course_selection.entity.Selection;
 import edu.hhuc.course_selection.entity.Student;
 import edu.hhuc.course_selection.service.StudentService;
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/student")
 public class StudentController{
@@ -24,9 +27,11 @@ public class StudentController{
     }
     
     @GetMapping(value = "/courses")
-    public List<Course> view(Authentication authentication){
+    public Set<Course> getCourses(Authentication authentication){
         String studentId = authentication.getName();
-        return service.getCoursesByStudentId(studentId);
+        return service.getSelectionsByStudentId(studentId)
+                .stream().map((Selection::getCourse))
+                .collect(Collectors.toSet());
     }
     
     @PostMapping(value = "/select")

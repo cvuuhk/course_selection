@@ -1,47 +1,53 @@
 package edu.hhuc.course_selection.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 学生信息表
  */
 @Entity
 @Table(name = "student")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer","selections"})
 public class Student{
     @Id
     @Column(name = "id", nullable = false, columnDefinition = "char(10)")
     private String id;
     
-    @Column(name = "name", nullable = false, columnDefinition = "varchar(10)")
+    @Column(name = "name", nullable = false)
     private String name;
     
-    @ManyToMany(targetEntity = Course.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinTable(name = "student_course",
-            joinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "id")})
-    private List<Course> courses = new ArrayList<>();
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private Set<Selection> selections = new HashSet<>();
     
     public Student(){}
-    public Student(String id, String name){
-        this.id = id;
-        this.name = name;
-    }
-    public void setId(String id){ this.id = id; }
+    public Student(String name){ this.name = name; }
+    
     public String getId(){ return id; }
-    public void setName(String name){ this.name = name; }
     public String getName(){ return name; }
-    @JsonIgnore
-    public List<Course> getCourses(){ return courses; }
+    public Set<Selection> getSelections(){ return selections; }
+    
+    public Student setName(String name){
+        this.name = name;
+        return this;
+    }
+    
+    public Student addSelection(Selection selection){
+        if(selection == null){
+            throw new IllegalArgumentException("参数 selection 为空！");
+        }
+        selections.add(selection);
+        selection.setStudent(this);
+        return this;
+    }
     
     @Override
     public String toString(){
-        return "Student{"+
-                "id="+id+'\''+
-                "name="+name+'\''+
-                '}';
+        return "{ 学号："+id+
+                "，姓名："+name+
+                " }";
     }
 }
